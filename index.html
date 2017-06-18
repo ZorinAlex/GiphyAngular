@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html ng-app="app" ng-controller="giphyCtrl">
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
+    <link rel="stylesheet" href="dist/style.min.css"/>
+</head>
+<body>
+<div id="upload" ng-show="uploadActive">
+    <div class="file">
+        <label>
+            <input type="file" file-model="giphy.uploadData.file" />
+            <span>Choose File</span>
+        </label>
+    </div>
+    <input name="tags" type="text"placeholder="tags" ng-model="giphy.uploadData.tags"/>
+    <input ng-show="giphy.uploadData.file" type="button" ng-click="myCollection.upload()" value="Upload" />
+</div>
+    <div class="modal-storage my-collection-close" ng-class="collection ? 'my-collection-open' : 'my-collection-close'" ng-click="collection=!collection">
+        <span class="header">My Collection</span>
+        <span ng-if="!myCollection.data.length" class="header placeholder">Empty</span>
+        <div class="images-wrapper">
+            <div class="col" >
+                <div class="image-small" ng-repeat="item in myCollection.imageData">
+                    <img ng-src="{{item.images.fixed_width.url}}" alt="mygif"/>
+                    <span class="remove-btn" ng-click="myCollection.remove($index);$event.stopPropagation();"><i class="fa fa-times" aria-hidden="true"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-hide="user.userName" class="login col-md-4">
+        <input type="text" placeholder="Username" ng-model="user.userLogin"/>
+        <button ng-click="user.login(user.userLogin)">Login</button>
+    </div>
+<div ng-if="images.modal">
+    <div class="modal-background" ng-show="images.modal" ng-click="images.modal=false">
+    </div>
+    <div class="popup">
+        <span class="close" ng-click="images.modal=false"><i class="fa fa-times-circle-o" aria-hidden="true"></i></span>
+        <img class="img-responsive" ng-src="{{images.currentImage}}" alt=""/>
+    </div>
+</div>
+<div >
+    <div class="container-fluid search-field">
+        <span ng-hide="!user.userName" ng-show="!uploadActive" ng-click="uploadActive=!uploadActive" class="upload"><i class="fa fa-upload fa-3x" aria-hidden="true"></i></span>
+        <div class="input-group input-group-lg col-sm-4 col-sm-offset-4">
+            <span class="input-group-addon" id="search_add"><i class="fa fa-search" aria-hidden="true"></i></span>
+            <input ng-model="searchField" ng-change="images.getSearchData()" ng-model-options='{ debounce: 1000 }' type="text" class="form-control" placeholder="Search" aria-describedby="search_add"/>
+        </div>
+    </div>
+    <div class="container">
+        <div id="photos" class="photos">
+            <div class="col" ng-repeat="i in getCol(col) track by $index">
+                <div class="image" ng-repeat="item in images.data" ng-if='($index + col)%col == $parent.$index' ng-style="getImageStyle(item.images.fixed_width,$index)">
+                    <img ng-src="{{item.images.fixed_width.url}}" ng-click="images.show(item)" width="{{item.images.fixed_width.width}}" height="{{item.images.fixed_width.height}}" alt="gif"/>
+                    <span ng-show='user.userName' ng-click="myCollection.add(item)"><i class="fa fa-plus-square" aria-hidden="true"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="dist/app.min.js"></script>
+
+
+</body>
+</html>
