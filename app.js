@@ -95,10 +95,10 @@ var app = angular.module('app',[])
                     return this.src + query + '&api_key=' + $scope.giphy.api_key;
                 },
                 getByIds: function (ids_arr) {
-                    return "http://api.giphy.com/v1/gifs?api_key=" + $scope.giphy.api_key + "&ids=" + ids_arr.join(',');
+                    return "//api.giphy.com/v1/gifs?api_key=" + $scope.giphy.api_key + "&ids=" + ids_arr.join(',');
                 },
                 getById: function (id) {
-                    return "http://api.giphy.com/v1/gifs/"+id+"?api_key=" + $scope.giphy.api_key;
+                    return "//api.giphy.com/v1/gifs/"+id+"?api_key=" + $scope.giphy.api_key;
                 },
 
                 getWithOffset :function(){
